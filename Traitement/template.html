@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facture #{{ID_Facture}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #007BFF;
+            padding-bottom: 10px;
+        }
+        .header h1 {
+            color: #007BFF;
+        }
+        .info-section {
+            margin-bottom: 20px;
+        }
+        .info-box {
+            float: left;
+            width: 45%;
+            margin-right: 5%;
+        }
+        .clear {
+            clear: both;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .total-section {
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        .total-line {
+            text-align: right;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            text-align: center;
+            color: #777;
+        }
+        .highlight {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .info-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .photo-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .photo-section img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            padding: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Facture d'Électricité</h1>
+            <p>Numéro de facture: {{ID_Facture}}</p>
+        </div>
+        
+        <div class="info-section">
+            <div class="info-box">
+                <div class="info-title">Client:</div>
+                <p>
+                    {{Nom}} {{Prenom}}<br>
+                    {{Adresse}}
+                </p>
+            </div>
+            <div class="info-box">
+                <div class="info-title">Informations facture:</div>
+                <p>
+                    Date de facturation: {{Date_Facture}}<br>
+                    Date limite de paiement: {{Date_Limite_Paiement}}<br>
+                    Numéro de compteur: {{Numero_Compteur}}
+                </p>
+            </div>
+            <div class="clear"></div>
+        </div>
+        
+        <div class="highlight">
+            <div class="info-title">Période de consommation:</div>
+            <p>{{Periode_Consommation}}</p>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Consommation (kWh)</th>
+                    <th>Prix unitaire (MAD)</th>
+                    <th>Montant HT (MAD)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Consommation d'électricité</td>
+                    <td>{{Consommation}}</td>
+                    <td>{{Prix_Unitaire}}</td>
+                    <td>{{Montant_HT}}</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="total-section">
+            <div class="total-line">Montant Hors Taxes: {{Montant_HT}} MAD</div>
+            <div class="total-line">TVA (20%): {{TVA}} MAD</div>
+            <div class="total-line" style="font-size: 1.2em; color: #007BFF;">Montant Total TTC: {{Montant_TTC}} MAD</div>
+        </div>
+        
+        <div class="photo-section">
+            <div class="info-title">Photo du compteur:</div>
+            <img src="{{Photo_Compteur}}" alt="Photo du compteur">
+        </div>
+        
+        <div class="footer">
+            <p>Pour toute question concernant cette facture, n'hésitez pas à nous contacter.</p>
+            <p>Cette facture est payable dans un délai de 30 jours à compter de la date d'émission.</p>
+            <p>© 2025 Votre Entreprise d'Électricité - Tous droits réservés</p>
+        </div>
+    </div>
+</body>
+</html>

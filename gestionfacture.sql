@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mar. 18 mars 2025 à 14:54
+-- Généré le : mer. 19 mars 2025 à 20:25
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -50,6 +50,13 @@ CREATE TABLE `client` (
   `Mot_de_passe` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Déchargement des données de la table `client`
+--
+
+INSERT INTO `client` (`ID_Client`, `Nom`, `Prenom`, `Adresse`, `Email`, `Mot_de_passe`) VALUES
+(1, 'Dupont', 'Jean', '123 Rue Exemple, Paris', 'jean@gmail.com', 'mdp123');
+
 -- --------------------------------------------------------
 
 --
@@ -67,21 +74,6 @@ CREATE TABLE `consommation_annuelle` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `consommation_mensuelle`
---
-
-CREATE TABLE `consommation_mensuelle` (
-  `ID_Consommation` int(11) NOT NULL,
-  `ID_Client` int(11) DEFAULT NULL,
-  `Mois` int(11) DEFAULT NULL CHECK (`Mois` between 1 and 12),
-  `Année` int(11) DEFAULT NULL,
-  `Valeur_Compteur` decimal(10,2) DEFAULT NULL,
-  `Photo_Compteur` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `facture`
 --
 
@@ -92,7 +84,37 @@ CREATE TABLE `facture` (
   `Consommation` decimal(10,2) DEFAULT NULL,
   `Montant_HT` decimal(10,2) DEFAULT NULL,
   `Montant_TTC` decimal(10,2) DEFAULT NULL,
-  `Photo_Compteur` varchar(255) DEFAULT NULL
+  `Photo_Compteur` varchar(255) DEFAULT NULL,
+  `statut` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `facture`
+--
+
+INSERT INTO `facture` (`ID_Facture`, `ID_Client`, `Date_Facture`, `Consommation`, `Montant_HT`, `Montant_TTC`, `Photo_Compteur`, `statut`) VALUES
+(1, 1, '2025-03-18', 122.00, 112.24, 134.69, 'uploads/Capture d\'écran 2025-03-18 221140.png', NULL),
+(2, 1, '2025-03-18', 122.00, 112.24, 134.69, 'uploads/Capture d\'écran 2025-03-18 221140.png', NULL),
+(3, 1, '2025-03-19', 1200.00, 1320.00, 1584.00, 'uploads/Capture d\'écran 2025-03-18 221140.png', NULL),
+(4, 1, '2025-03-19', 1200.00, 1320.00, 1584.00, 'uploads/Capture d\'écran 2024-11-12 123614.png', NULL),
+(5, 1, '2025-03-18', 122.00, 112.24, 134.69, 'uploads/Capture d\'écran 2024-11-12 123614.png', NULL),
+(6, 1, '2025-03-18', 122.00, 112.24, 134.69, 'uploads/Capture d\'écran 2024-11-12 123614.png', NULL),
+(7, 1, '2025-03-18', 1234.00, 1357.40, 1628.88, 'uploads/Capture d\'écran 2024-11-12 123614.png', NULL),
+(8, 1, '2025-03-18', 1234.00, 1357.40, 1628.88, 'uploads/Capture d\'écran 2024-11-12 123614.png', NULL),
+(9, 1, '2025-03-13', 1233.00, 1356.30, 1627.56, 'uploads/Capture d\'écran 2024-11-12 123614.png', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `fournisseur`
+--
+
+CREATE TABLE `fournisseur` (
+  `ID_Fournisseur` int(11) NOT NULL,
+  `Nom` varchar(50) NOT NULL,
+  `Prenom` varchar(50) NOT NULL,
+  `Email` varchar(100) NOT NULL,
+  `Mot_de_passe` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -109,6 +131,17 @@ CREATE TABLE `reclamation` (
   `Statut` enum('En attente','Traitée','Rejetée') DEFAULT 'En attente',
   `Date_Reclamation` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `reclamation`
+--
+
+INSERT INTO `reclamation` (`ID_Reclamation`, `ID_Client`, `Type`, `Description`, `Statut`, `Date_Reclamation`) VALUES
+(1, NULL, 'Fuite interne', 'jjjsfjsfkklkls', 'En attente', '2025-03-18 21:16:51'),
+(2, NULL, 'Facture', 'dlklkkdsklsd', 'En attente', '2025-03-18 21:40:06'),
+(3, NULL, 'Facture', 'dlklkkdsklsd', 'En attente', '2025-03-18 22:10:46'),
+(4, NULL, 'Autre', 'jkjkjkkj', 'En attente', '2025-03-18 23:37:48'),
+(5, NULL, 'Fuite interne', 'bnhnnn', 'En attente', '2025-03-19 14:08:27');
 
 -- --------------------------------------------------------
 
@@ -159,18 +192,18 @@ ALTER TABLE `consommation_annuelle`
   ADD KEY `ID_Agent` (`ID_Agent`);
 
 --
--- Index pour la table `consommation_mensuelle`
---
-ALTER TABLE `consommation_mensuelle`
-  ADD PRIMARY KEY (`ID_Consommation`),
-  ADD KEY `ID_Client` (`ID_Client`);
-
---
 -- Index pour la table `facture`
 --
 ALTER TABLE `facture`
   ADD PRIMARY KEY (`ID_Facture`),
   ADD KEY `ID_Client` (`ID_Client`);
+
+--
+-- Index pour la table `fournisseur`
+--
+ALTER TABLE `fournisseur`
+  ADD PRIMARY KEY (`ID_Fournisseur`),
+  ADD UNIQUE KEY `Email` (`Email`);
 
 --
 -- Index pour la table `reclamation`
@@ -199,7 +232,7 @@ ALTER TABLE `agent`
 -- AUTO_INCREMENT pour la table `client`
 --
 ALTER TABLE `client`
-  MODIFY `ID_Client` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_Client` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `consommation_annuelle`
@@ -208,22 +241,22 @@ ALTER TABLE `consommation_annuelle`
   MODIFY `ID_Consommation_Annuelle` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `consommation_mensuelle`
---
-ALTER TABLE `consommation_mensuelle`
-  MODIFY `ID_Consommation` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT pour la table `facture`
 --
 ALTER TABLE `facture`
-  MODIFY `ID_Facture` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_Facture` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT pour la table `fournisseur`
+--
+ALTER TABLE `fournisseur`
+  MODIFY `ID_Fournisseur` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `reclamation`
 --
 ALTER TABLE `reclamation`
-  MODIFY `ID_Reclamation` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_Reclamation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `tarification`
@@ -241,12 +274,6 @@ ALTER TABLE `tarification`
 ALTER TABLE `consommation_annuelle`
   ADD CONSTRAINT `consommation_annuelle_ibfk_1` FOREIGN KEY (`ID_Client`) REFERENCES `client` (`ID_Client`) ON DELETE CASCADE,
   ADD CONSTRAINT `consommation_annuelle_ibfk_2` FOREIGN KEY (`ID_Agent`) REFERENCES `agent` (`ID_Agent`) ON DELETE SET NULL;
-
---
--- Contraintes pour la table `consommation_mensuelle`
---
-ALTER TABLE `consommation_mensuelle`
-  ADD CONSTRAINT `consommation_mensuelle_ibfk_1` FOREIGN KEY (`ID_Client`) REFERENCES `client` (`ID_Client`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `facture`
